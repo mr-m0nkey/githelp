@@ -21,7 +21,21 @@ fn main() {
         let file = file.unwrap();
         if is_a_repo(&file) {
             // println!("{}", file.path().display());
-            run_command(&os, "ls", &file.path().into_os_string().into_string().unwrap());
+            run_command(
+                &os,
+                "git add .",
+                &file.path().into_os_string().into_string().unwrap(),
+            );
+            run_command(
+                &os,
+                "git commit -m \"commit-message\"",
+                &file.path().into_os_string().into_string().unwrap(),
+            );
+            run_command(
+                &os,
+                "git checkout -b new-branch",
+                &file.path().into_os_string().into_string().unwrap(),
+            );
         }
     }
 }
@@ -43,8 +57,9 @@ fn run_command(os: &OS, command: &str, current_dir: &str) {
 
     match os {
         OS::WINDOWS => {
-            let comand = String::from("/C ").push_str(command);
-            let command_tokens = command.split(" ").collect::<Vec<&str>>();
+            let mut formatted_command = String::from("/C ");
+            formatted_command.push_str(&command);
+            let command_tokens = formatted_command.split(" ").collect::<Vec<&str>>();
             let output = Command::new("cmd")
                 .args(command_tokens)
                 .current_dir(&current_dir)
