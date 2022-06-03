@@ -33,7 +33,7 @@ fn main() {
             );
             run_command(
                 &os,
-                "git checkout -b new-branch",
+                "git checkout -b new-branch-2",
                 &file.path().into_os_string().into_string().unwrap(),
             );
         }
