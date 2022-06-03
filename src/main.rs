@@ -1,8 +1,8 @@
+use os::args;
 use std::env;
 use std::fs;
 use std::path::Path;
 use std::process::Command;
-use os::args;
 
 enum OS {
     WINDOWS,
@@ -15,7 +15,6 @@ fn main() {
     } else {
         OS::LINUX
     };
-
 
     let working_directory = env::current_dir().unwrap().into_os_string();
 
@@ -57,6 +56,8 @@ fn is_a_repo(file: &fs::DirEntry) -> bool {
 fn run_command(os: &OS, command: &str, current_dir: &str) {
     println!("Runninf ({}) on ({})", &command, &current_dir);
 
+    //TODO update resutlt printing
+    //TODO return Result
     match os {
         OS::WINDOWS => {
             let mut formatted_command = String::from("/C ");
