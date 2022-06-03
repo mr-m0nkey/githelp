@@ -2,6 +2,7 @@ use std::env;
 use std::fs;
 use std::path::Path;
 use std::process::Command;
+use os::args;
 
 enum OS {
     WINDOWS,
@@ -9,30 +10,31 @@ enum OS {
 }
 
 fn main() {
-    let os = if cfg!(target_os = "windows") {
+    let platform = if cfg!(target_os = "windows") {
         OS::WINDOWS
     } else {
         OS::LINUX
     };
 
+
     let working_directory = env::current_dir().unwrap().into_os_string();
 
-    for file in fs::read_dir("/Users/majagunna/Projects/rust").unwrap() {
+    for file in fs::read_dir(working_directory).unwrap() {
         let file = file.unwrap();
         if is_a_repo(&file) {
-            // println!("{}", file.path().display());
+            //TODO get checkout branch name from args
             run_command(
-                &os,
+                &platform,
                 "git add .",
                 &file.path().into_os_string().into_string().unwrap(),
             );
             run_command(
-                &os,
-                "git commit -m \"commit-message\"",
+                &platform,
+                "git commit -m \"checkout\"",
                 &file.path().into_os_string().into_string().unwrap(),
             );
             run_command(
-                &os,
+                &platform,
                 "git checkout -b new-branch-2",
                 &file.path().into_os_string().into_string().unwrap(),
             );
